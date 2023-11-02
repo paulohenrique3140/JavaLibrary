@@ -11,10 +11,10 @@ public class Book {
 	private BookGenre genre;
 	private BookState state;
 	
-	public Book(String title, String author, Integer isbn, Integer release, BookGenre genre, BookState state) {
+	public Book(Integer isbn, String title, String author, Integer release, BookGenre genre, BookState state) {
+		this.isbn = isbn;
 		this.title = title;
 		this.author = author;
-		this.isbn = isbn;
 		this.release = release;
 		this.genre = genre;
 		this.state = state;
@@ -56,13 +56,13 @@ public class Book {
 		return genre;
 	}
 	
-	public BookState getSate() {
+	public BookState getState() {
 		return state;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("ISBN: %d | Title: %s | Author: %s | Release: %d | Genre: %s | State: %s", 
+		return String.format("\nISBN: %d | Title: %s | Author: %s | Release: %d | Genre: %s | State: %s\n", 
 				isbn, title, author, release, genre, state);
 	}
 	
