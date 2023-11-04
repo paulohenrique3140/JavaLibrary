@@ -7,9 +7,15 @@ import model.entities.enums.BookState;
 import service.LibraryService;
 
 public class Library {
-	protected List<Book> bookList;
-	protected List<Book> invalidBookList;
-	protected List<Book> borrowedBookList;
+	private List<Book> bookList;
+	private List<Book> invalidBookList;
+	private List<Book> borrowedBookList;
+		
+	// Instantiating an object of the service class to handle the class's utilities
+	LibraryService service = new LibraryService();
+	
+	// Instantiating an object of the User class to handle the class's utilities
+	User user = new User();
 	
 	// Stanrting the lists
 	public Library() {
@@ -18,12 +24,14 @@ public class Library {
 		borrowedBookList = new ArrayList<>();
 	}
 	
-	// Instantiating an object of the service class to handle the class's utilities
-	LibraryService service = new LibraryService();
+	public List<Book> getBorrowedBooks() {
+		return borrowedBookList;
+	}
 	
-	// Instantiating an object of the User class to handle the class's utilities
-	User user = new User();
-	
+	public List<Book> getInvalidBook() {
+		return invalidBookList;
+	}
+		
 	//Method for adding a book class object to the library collection
 	public void addBook(Book book) {
 		bookList.add(book);
@@ -40,21 +48,6 @@ public class Library {
 		return auxList;
 	}
 	
-	//Method for displaying borrowed books
-	public List<Book> getBorrowedBooks() {
-		return borrowedBookList;
-	}
-	
-	// Method to list books in invalid state
-	public List<Book> showInvalid() {
-		for (Book x : bookList) {
-			if (x.getState() == BookState.Invalid) {
-				invalidBookList.add(x);
-			}
-		}
-		return invalidBookList;
-	}
-	
 	// Method that invokes the LibraryService class to first check whether the requested book exists and if so, 
 	// then returns the book passed in the parameter
 	public Book searchBook(String name) {
@@ -63,7 +56,16 @@ public class Library {
 		}
 		return service.findByName(bookList, name);
 	}
+	
+	// Method to search book list by author
+	public List<Book> searchAuthor(String author) {
+		if (!service.isThereAAuthor(bookList, author)) {
+			return null;
+		}
+		return service.findByAuthor(bookList, author);
+	}
 
+	// Method to loan books
 	public boolean loan(String name, User user) {
 		if (!service.isThereAbook(bookList, name)) {
 			return false;
@@ -78,9 +80,20 @@ public class Library {
 		return true;
 	}
 	
-	public boolean devolution(String name, User user) {
+	// Method to return books
+	public boolean devolution(String name, User user, int state) {
 		if (!service.isThereAbook(borrowedBookList, name)) {
 			return false;
+		}
+		
+		// Changing book state
+		if (state == 0) {
+			invalidBookList.add(service.findByName(borrowedBookList, name));
+			service.findByName(borrowedBookList, name).setState(BookState.Invalid);
+		} else if (state == 1) {
+			service.findByName(borrowedBookList, name).setState(BookState.Bad);
+		} else {
+			service.findByName(borrowedBookList, name).setState(BookState.Good);
 		}
 		
 			// Returning the book to collection

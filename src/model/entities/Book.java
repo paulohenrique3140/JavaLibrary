@@ -10,7 +10,11 @@ public class Book {
 	private Integer release;
 	private BookGenre genre;
 	private BookState state;
+	
+	public Book() {
 		
+	}
+	
 	public Book(Integer isbn, String title, String author, Integer release, BookGenre genre, BookState state) {
 		this.isbn = isbn;
 		this.title = title;
@@ -58,6 +62,10 @@ public class Book {
 	
 	public BookState getState() {
 		return state;
+	}
+	
+	public void setState(BookState state) {
+		this.state = state;
 	}
 	
 	@Override
