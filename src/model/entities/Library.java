@@ -17,11 +17,15 @@ public class Library {
 	// Instantiating an object of the User class to handle the class's utilities
 	User user = new User();
 	
-	// Stanrting the lists
+	// Starting the lists
 	public Library() {
 		bookList = new ArrayList<>();
 		invalidBookList = new ArrayList<>();
 		borrowedBookList = new ArrayList<>();
+	}
+	
+	public List<Book> getBookList(){
+		return bookList;
 	}
 	
 	public List<Book> getBorrowedBooks() {
@@ -70,13 +74,16 @@ public class Library {
 		if (!service.isThereAbook(bookList, name)) {
 			return false;
 		} 
+		// Adding the book to the book user's list
+		user.addBookUser(bookList, name);
+		
 		// Adding the book to the borrowed list
 		borrowedBookList.add(service.findByName(bookList, name));
 		
 		// Removing the book from the collection for loan
 		bookList.remove(service.findByName(bookList, name));
 		
-		// Don't forgot: ADD BOOKUSER
+		
 		return true;
 	}
 	
@@ -96,12 +103,15 @@ public class Library {
 			service.findByName(borrowedBookList, name).setState(BookState.Good);
 		}
 		
-			// Returning the book to collection
+		// Returning the book to collection
 		bookList.add(service.findByName(borrowedBookList, name));
+		
+		// Removing the book from the book user's list
+		user.removeBookUser(borrowedBookList, name);
+		
 		// Removing the book from the borrowed list
 		borrowedBookList.remove(service.findByName(borrowedBookList, name));
 		
-		// Don't forgot: REMOVE BOOK USER
 		return true;
 	}
 }

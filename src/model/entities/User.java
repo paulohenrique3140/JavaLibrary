@@ -1,8 +1,10 @@
 package model.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.entities.enums.UserStatus;
+import service.LibraryService;
 
 public class User {
 	private Integer id;
@@ -11,6 +13,8 @@ public class User {
 	private String phonne;
 	private List<Book> userBooks;
 	private UserStatus status;
+	
+	LibraryService service = new LibraryService();
 	
 	public User() {
 		
@@ -22,6 +26,7 @@ public class User {
 		this.email = email;
 		this.phonne = phonne;
 		this.status = status;
+		userBooks = new ArrayList<>();
 	}
 	
 	public Integer getId() {
@@ -56,9 +61,21 @@ public class User {
 		return status;
 	}
 	
+	public void addBookUser(List<Book> bookList, String bookName) {
+		userBooks.add(service.findByName(bookList, bookName));
+	}
+	
+	public void removeBookUser(List<Book> borrowedBookList, String bookName) {
+		userBooks.remove(service.findByName(borrowedBookList, bookName));
+	}
+	
+	public List<Book> getUserBooks() {
+		return userBooks;
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("User id: %d | Name: %s | Email: %s | Phonne: %s | Status: %s", 
+		return String.format("\nUser id: %d | Name: %s | Email: %s | Phonne: %s | Status: %s\n", 
 				id, name, email, phonne, status);
 	}
 	
