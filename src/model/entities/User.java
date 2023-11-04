@@ -12,6 +12,10 @@ public class User {
 	private List<Book> userBooks;
 	private UserStatus status;
 	
+	public User() {
+		
+	}
+	
 	public User(Integer id, String name, String email, String phonne, UserStatus status) {
 		this.id = id;
 		this.name = name;
