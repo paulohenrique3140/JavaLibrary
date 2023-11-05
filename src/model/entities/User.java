@@ -61,6 +61,10 @@ public class User {
 		return status;
 	}
 	
+	public void setStatus(UserStatus status) {
+		this.status = status;
+	}
+	
 	public void addBookUser(List<Book> bookList, String bookName) {
 		userBooks.add(service.findByName(bookList, bookName));
 	}
