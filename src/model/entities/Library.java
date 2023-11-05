@@ -38,6 +38,9 @@ public class Library {
 		
 	//Method for adding a book class object to the library collection
 	public void addBook(Book book) {
+		if (book.getState() == BookState.Invalid) {
+			invalidBookList.add(book);
+		}
 		bookList.add(book);
 	}
 	

@@ -11,128 +11,91 @@ import model.entities.enums.BookState;
 import model.entities.enums.UserStatus;
 
 public class Program {
+	
+	
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		
 		Book book = new Book(1, "O Homem", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
 		Book book2 = new Book(2, "A Mulher", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
-		Book book3 = new Book(3, "O velho", "Paulo", 1991, BookGenre.Adventure, BookState.Bad);
+		Book book3 = new Book(3, "O Velho", "Paulo", 1991, BookGenre.Adventure, BookState.Bad);
+		Book book4 = new Book(4, "O Moco", "Paulo", 1991, BookGenre.Adventure, BookState.Invalid);
+		Book book5 = new Book(5, "O Fone", "Giovana", 1991, BookGenre.Adventure, BookState.Bad);
+		Book book6 = new Book(6, "Controle", "Helena", 1991, BookGenre.Adventure, BookState.Bad);
 		
-		User user = new User(1, "John", "jhon@paulo.com", "11934069298", UserStatus.Active);
-		User user2 = new User(2, "Marie", "marie@email.com", "11965564849", UserStatus.Inactive);
-		User user3 = new User(3, "Herbert", "herbert@email.com", "11946558797", UserStatus.Vip);
+		User user = new User(1, "John", "jhon@email.com", "11934069298", UserStatus.Active);
+		User user2 = new User(2, "Marie", "marie@email.com", "11965564849", UserStatus.Active);
+		User user3 = new User(3, "Herbert", "herbert@email.com", "11946558797", UserStatus.Inactive);
+		User user4 = new User(4, "Kayle", "kayle@email.com", "11946665879", UserStatus.Vip);
+		User user5 = new User(5, "Julien", "julien@email.com", "11996658797", UserStatus.Active);
+		User user6 = new User(6, "Ingrid", "ingrid@email.com", "11935449458", UserStatus.Active);
 		
 		UserManagement userManagement = new UserManagement();
 		Library library = new Library();
 		
-		
-		/* TESTS WITH LIBRARY
+		// Test to add objects
 		library.addBook(book);
 		library.addBook(book2);
 		library.addBook(book3);
+		library.addBook(book4);
+		library.addBook(book5);
+		library.addBook(book6);
 		
-		// Test to show data
-		System.out.println("Collection: \n" + library.showCollection());
-		System.out.println("Invalid books: \n" + library.getInvalidBook());
-		System.out.println();
-		System.out.println("Acvite users: \n" + userManagement.showUsers());
-		System.out.println("Inactive users: \n" + userManagement.getInactiveUserList());
-		System.out.println("Vip users: \n" + userManagement.showVip());
-		System.out.println();
-		
-		// Test to loan book
-		System.out.print("Loan [Book name]: ");
-		String loanName = input.nextLine();
-		if (!library.loan(loanName, user)) {
-			System.out.println("Not found!");
-		} else {
-			library.loan(loanName, user);
-			
-			System.out.println("Collection: \n" + library.showCollection());
-			System.out.println("Borrowed books: \n" + library.getBorrowedBooks());
-			System.out.println("User books: \n" + user.getUserBooks());
-		}
-		System.out.println();
-		
-		// Test to devolution book
-		System.out.print("Devolution [Book name]: ");
-		String devolutionName = input.nextLine();
-		System.out.print("Book state [0 = Invalid / 1 = Bad / 2 = Good]: ");
-		int bookState = input.nextInt();
-		if (!library.devolution(devolutionName, user, bookState)) {
-			System.out.println("Not found");
-		} else {
-			library.devolution(devolutionName, user, bookState);
-			System.out.println("Collection: \n" + library.showCollection());
-			System.out.println("Borrowed books: \n" + library.getBorrowedBooks());
-			System.out.println("Invalid books: \n" + library.getInvalidBook());
-			System.out.println("User books: \n" + user.getUserBooks());
-		}
-		System.out.println();
-		
-		// Test to find books by author
-		System.out.print("Author: ");
-		input.nextLine();
-		String author = input.nextLine();
-		System.out.println(library.searchAuthor(author));
-		System.out.println();
-		/*
-		
-		########################################
-		
-		/* TESTS WITH USERMANAGEMENT
 		userManagement.addUser(user);
 		userManagement.addUser(user2);
 		userManagement.addUser(user3);
+		userManagement.addUser(user4);
+		userManagement.addUser(user5);
+		userManagement.addUser(user6);
 		
-		// Test to show data
-		System.out.println("Acvite users: \n" + userManagement.showUsers());
-		System.out.println("Inactive users: \n" + userManagement.getInactiveUserList());
-		System.out.println("Vip users: \n" + userManagement.showVip());
+		/*
+		 * 
+		 *
+		// Test to show lists
+		System.out.println("\nAvailable books: \n" + library.showCollection());
+		System.out.println("\nInavailable books: \n" + library.getInvalidBook());
+		System.out.println("\nAll books: \n" + library.getBookList());
 		System.out.println();
-		System.out.println();
-		System.out.println("TODOS USUARIOS JUNTOS");
-		System.out.println(userManagement.getUserList());
-		System.out.println();
+		System.out.println("\nActive users: \n" + userManagement.showUsers());
+		System.out.println("\nVip users: \n" + userManagement.showVip());
+		System.out.println("\nInactive users: \n" + userManagement.getInactiveUserList());
+		System.out.println("\nAll Users in register: \n" + userManagement.getUserList());
 		
-		// Test search user by email
-		System.out.println("Find user. Type email: ");
+		// Test to search a book
+		System.out.print("\nSearch a book. Type the title: ");
+		String title = input.nextLine();
+		System.out.print(library.searchBook(title) != null ? library.searchBook(title) : "Book's not found!");
+		
+		// Test to search books by author
+		System.out.print("\nBooks by author. Type an author: ");
+		String author = input.nextLine();
+		System.out.println(library.searchAuthor(author) != null ? library.searchAuthor(author) : "Author's not found!");
+		
+		// Test to search a user
+		System.out.print("\nSearch a user. Type the email: ");
 		String email = input.nextLine();
-		if (userManagement.searchUser(email) == null) {
-			System.out.print("User not found");			
+		System.out.println(userManagement.searchUser(email) != null ? userManagement.searchUser(email) : "User's not found");
+		*
+		**
+		*/
+		
+		// Test to loan and devolution
+		System.out.print("\nLoan books. Type a book title: ");
+		String title = input.nextLine();
+		System.out.print("\nType email user to borrow the book: ");
+		String email = input.nextLine();
+		if (library.searchBook(title) == null || userManagement.searchUser(email) == null) {
+			System.out.println("Invalid book or user. Try again.");
 		} else {
-			System.out.print("\nResult of your search:" + userManagement.searchUser(email));
+			library.loan(title, userManagement.searchUser(email));
+			
 		}
-		System.out.println();
-		System.out.println();
-		System.out.print("Change user status. Type email user: ");
-		email = input.nextLine();
-		if (userManagement.searchUser(email) == null) {
-			System.out.println("User not found");
-		} else {
-			System.out.print("Type the status to update [0 = Inactive / 1 = Active / 2 = Vip");
-			int userStatus = input.nextInt();
-			userManagement.changeStatus(email, userStatus);
-		}
-		System.out.print("Updated data: " );
-		System.out.println("Acvite users: \n" + userManagement.showUsers());
-		System.out.println("Inactive users: \n" + userManagement.getInactiveUserList());
-		System.out.println("Vip users: \n" + userManagement.showVip());
-		System.out.println();
-		System.out.println();
-		System.out.println("TODOS USUARIOS JUNTOS");
-		System.out.println(userManagement.getUserList());
-		System.out.println();
-		System.out.println();
-		System.out.print("User borrowed books. Type an email: ");
-		input.nextLine();
-		email = input.nextLine();
-		if (userManagement.searchUser(email) == null) {
-			System.out.println("User not found");
-		} else {
-			System.out.printf("\n%s borrowed book list: \n%s", 
-					userManagement.searchUser(email).getName(), userManagement.searchUser(email).getUserBooks());
-		}*/
+		
+		
+		
+		//library.searchBook(title = input.nextLine() != null ? library.loan(title, user6) : System.out.print("\nBook's not found"));
+		
+		
 		
 		input.close();
 	}
