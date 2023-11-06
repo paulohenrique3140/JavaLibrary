@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import model.entities.enums.UserStatus;
+import model.exceptions.UserManagementException;
 import service.UserManagementService;
 
 public class UserManagement {
@@ -55,7 +56,7 @@ public class UserManagement {
 	// Method to search a user by email
 	public User searchUser(String email) {
 		if (!userService.isThereAnUser(userList, email)) {
-			return null;
+			throw new UserManagementException("User's not found");
 		}
 		return userService.findByEmail(userList, email);
 	} 
@@ -68,7 +69,7 @@ public class UserManagement {
 		} else if (status == 1) {
 			userService.findByEmail(userList, email).setStatus(UserStatus.Active);
 		} else {
-			userService.findByEmail(userList, email).setStatus(UserStatus.Active);
+			userService.findByEmail(userList, email).setStatus(UserStatus.Vip);
 		}
 	}
 }

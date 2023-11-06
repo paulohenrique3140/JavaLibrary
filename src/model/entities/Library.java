@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entities.enums.BookState;
+import model.exceptions.LibraryException;
 import service.LibraryService;
 
 public class Library {
@@ -58,8 +59,9 @@ public class Library {
 	// Method that invokes the LibraryService class to first check whether the requested book exists and if so, 
 	// then returns the book passed in the parameter
 	public Book searchBook(String name) {
-		if (!service.isThereAbook(bookList, name)) {
-			return null;
+		if (!service.isThereAbook(bookList, name) || service.findByName(bookList, name).getState() == BookState.Invalid) {
+			throw new LibraryException("Book is not found or invalid");
+			
 		}
 		return service.findByName(bookList, name);
 	}
@@ -67,7 +69,7 @@ public class Library {
 	// Method to search book list by author
 	public List<Book> searchAuthor(String author) {
 		if (!service.isThereAAuthor(bookList, author)) {
-			return null;
+			throw new LibraryException("There's no results for this search");
 		}
 		return service.findByAuthor(bookList, author);
 	}
@@ -92,18 +94,18 @@ public class Library {
 	
 	// Method to return books
 	public boolean devolution(String name, User user, int state) {
-		if (!service.isThereAbook(borrowedBookList, name)) {
+		if (!service.isThereAbook(user.getUserBooks(), name)) {
 			return false;
 		}
 		
 		// Changing book state
 		if (state == 0) {
 			invalidBookList.add(service.findByName(borrowedBookList, name));
-			service.findByName(borrowedBookList, name).setState(BookState.Invalid);
+			service.findByName(user.getUserBooks(), name).setState(BookState.Invalid);
 		} else if (state == 1) {
-			service.findByName(borrowedBookList, name).setState(BookState.Bad);
+			service.findByName(user.getUserBooks(), name).setState(BookState.Bad);
 		} else {
-			service.findByName(borrowedBookList, name).setState(BookState.Good);
+			service.findByName(user.getUserBooks(), name).setState(BookState.Good);
 		}
 		
 		// Returning the book to collection
