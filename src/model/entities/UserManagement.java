@@ -44,12 +44,18 @@ public class UserManagement {
 				auxList.add(x);
 			} 
 		}
+		if (auxList.size() == 0) {
+			throw new UserManagementException("There're no registrered users");
+		}
 		return auxList;
 	}
 	
 	// Show vip users
 	public List<User> showVip() {
 		List<User> vip = userList.stream().filter(x -> x.getStatus() == UserStatus.Vip).collect(Collectors.toList());
+		if (vip.size() == 0) {
+			throw new UserManagementException("There're no vip users");
+		}
 		return vip;
 	}
 	

@@ -1,13 +1,16 @@
 package application;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import model.entities.Book;
 import model.entities.Library;
+import model.entities.User;
 import model.entities.UserManagement;
 import model.entities.enums.BookGenre;
 import model.entities.enums.BookState;
+import model.entities.enums.UserStatus;
 import model.exceptions.LibraryException;
 
 public class Program {
@@ -16,11 +19,10 @@ public class Program {
 	
 	public static void main(String[] args) {
 		
-		
 		UserManagement userManagement = new UserManagement();
 		Library library = new Library();
-		
-		
+		Book book;
+		User user;
 		int option = -1;
 		while (option != 0 ) {
 			System.out.println("\n##### JAVA LIBRARY ####");
@@ -47,6 +49,10 @@ public class Program {
 							System.out.println("\n### BOOK ADD ###");
 							System.out.print("\nBook ISBN: ");
 							int isbn = input.nextInt();
+							while (hasIsbn(library.getBookList(), isbn)) {
+								System.out.print("The ID already exists. Please choose another one: ");
+								isbn = input.nextInt();
+							}
 							System.out.print("\nBook title: ");
 							input.nextLine();
 							String title = input.nextLine();
@@ -58,7 +64,7 @@ public class Program {
 							BookGenre genre = BookGenre.valueOf(input.next());
 							System.out.print("\nBook State: ");
 							BookState state = BookState.valueOf(input.next());
-							Book book = new Book(isbn, title, author, release, genre, state);
+							book = new Book(isbn, title, author, release, genre, state);
 							library.addBook(book);
 							System.out.println("\nDone!");
 							break;
@@ -75,6 +81,8 @@ public class Program {
 									System.out.println("\n### Available books ###\n" + library.showCollection());
 								} else if (optionThree == 2) {
 									System.out.println("\n### Unavailable books ###\n" + library.getInvalidBook());
+									System.out.println("\nInvalid books\n" + library.getInvalidBook());
+									System.out.println("\nBorrowed books\n" + library.getBorrowedBooks());
 								} else {
 									System.out.println("\n### All library books ###\n" + library.getBookList());
 								}
@@ -94,13 +102,43 @@ public class Program {
 							String authorSearch = input.nextLine();
 							System.out.println("### Search results ###\n" + library.searchAuthor(authorSearch));
 							break;
+						case 5:
+							System.out.println("\n### BOOK LOAN ###");
+							System.out.print("\nPlease, type the title book to loan: ");
+							input.nextLine();
+							String titleLoan = input.nextLine();
+							library.searchBook(titleLoan);
+							System.out.print("\nEnter the user's email for the loan: ");
+							String emailLoan = input.nextLine();
+							userManagement.searchUser(emailLoan);
+							if (library.loan(titleLoan, userManagement.searchUser(emailLoan))) {
+								System.out.println("User books: " + userManagement.searchUser(emailLoan).getUserBooks());
+							}
+							break;
+						default:
+							System.out.println("Good Bye");
 						}
 					}
-				} else {
-					System.out.println("hello");					
+				} else if (option == 2) {
+					System.out.println("\n### USER ADD ###");
+					System.out.print("\nUser id: ");
+					int id = input.nextInt();
+					while (hasId(userManagement.getUserList(), id)) {
+						System.out.print("The ID already exists. Please choose another one: ");
+						id = input.nextInt();
+					} 
+					System.out.print("\nUsername: ");
+					input.nextLine();
+					String name = input.nextLine();
+					System.out.print("\nEmail: ");
+					String email = input.nextLine();
+					System.out.print("\nPhonne number ");
+					String phonne = input.nextLine();
+					System.out.print("\nUser status: ");
+					UserStatus status = UserStatus.valueOf(input.next());
+					user = new User(id, name, email, phonne, status);
+					userManagement.addUser(user);
 				}
-				
-				
 			} catch (LibraryException e) {
 				System.out.println("\nError! " + e.getMessage());
 			}  catch (InputMismatchException e) {
@@ -113,41 +151,7 @@ public class Program {
 		}
 		
 		/*
-		// Test to add objects
-		Book book = new Book(1, "O Homem", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
-		Book book2 = new Book(2, "A Mulher", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
-		Book book3 = new Book(3, "O Velho", "Paulo", 1991, BookGenre.Adventure, BookState.Invalid);
-		Book book4 = new Book(4, "O Moco", "Paulo", 1991, BookGenre.Adventure, BookState.Invalid);
-		Book book5 = new Book(5, "O Fone", "Giovana", 1991, BookGenre.Adventure, BookState.Bad);
-		Book book6 = new Book(6, "Controle", "Helena", 1991, BookGenre.Adventure, BookState.Bad);
-		
-		User user = new User(1, "John", "jhon@email.com", "11934069298", UserStatus.Active);
-		User user2 = new User(2, "Marie", "marie@email.com", "11965564849", UserStatus.Active);
-		User user3 = new User(3, "Herbert", "herbert@email.com", "11946558797", UserStatus.Inactive);
-		User user4 = new User(4, "Kayle", "kayle@email.com", "11946665879", UserStatus.Inactive);
-		User user5 = new User(5, "Julien", "julien@email.com", "11996658797", UserStatus.Active);
-		User user6 = new User(6, "Ingrid", "ingrid@email.com", "11935449458", UserStatus.Active);
-		
-		library.addBook(book);
-		library.addBook(book2);
-		library.addBook(book3);
-		library.addBook(book4);
-		library.addBook(book5);
-		library.addBook(book6);
-		
-		userManagement.addUser(user);
-		userManagement.addUser(user2);
-		userManagement.addUser(user3);
-		userManagement.addUser(user4);
-		userManagement.addUser(user5);
-		userManagement.addUser(user6);
-		
-		
-		// Test to show lists
-		System.out.println("\nAvailable books: \n" + library.showCollection());
-		System.out.println("\nInavailable books: \n" + library.getInvalidBook());
-		System.out.println("\nAll books: \n" + library.getBookList());
-		System.out.println();
+		// Test to show users
 		System.out.println("\nActive users: \n" + userManagement.showUsers());
 		System.out.println("\nVip users: \n" + userManagement.showVip());
 		System.out.println("\nInactive users: \n" + userManagement.getInactiveUserList());
@@ -275,5 +279,15 @@ public class Program {
 			option = input.nextInt();
 		}
 		return option;
+	}
+	
+	public static boolean hasId(List<User> user, int id) {
+		User list = user.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+		return list != null;
+	}
+	
+	public static boolean hasIsbn(List<Book> book, int isbn) {
+		Book list = book.stream().filter(x -> x.getIsbn() == isbn).findFirst().orElse(null);
+		return list != null;
 	}
 }
