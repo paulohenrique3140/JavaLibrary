@@ -5,18 +5,115 @@ import java.util.Scanner;
 
 import model.entities.Book;
 import model.entities.Library;
-import model.entities.User;
 import model.entities.UserManagement;
 import model.entities.enums.BookGenre;
 import model.entities.enums.BookState;
-import model.entities.enums.UserStatus;
 import model.exceptions.LibraryException;
 
 public class Program {
-
+	
+	public static Scanner input = new Scanner(System.in);
+	
 	public static void main(String[] args) {
-		Scanner input = new Scanner(System.in);
 		
+		
+		UserManagement userManagement = new UserManagement();
+		Library library = new Library();
+		
+		
+		int option = -1;
+		while (option != 0 ) {
+			System.out.println("\n##### JAVA LIBRARY ####");
+			try {
+				System.out.print("\nMenu: \n"
+						+ "[1] Library\n[2] User registration\n[0] Exit\n");
+				System.out.print("\nChoose an option: ");
+				option = input.nextInt();
+				option = validateOption(option, 2);
+				
+				if (option == 1) {
+					switch (option) {
+					case 1:
+						System.out.println("\n### WELCOME TO THE LIBRARY ###");
+						System.out.print("\nMenu: \n"
+								+ "[1] Add book\n[2] Show collection\n[3] Search book\n[4] Search by author\n"
+								+ "[5] Book loan\n[6] Book return\n[0] Return to previous menu\n");
+						System.out.print("\nChoose an option: ");
+						int optionTwo = input.nextInt();
+						optionTwo = validateOption(optionTwo, 6);
+						
+						switch(optionTwo) {
+						case 1:
+							System.out.println("\n### BOOK ADD ###");
+							System.out.print("\nBook ISBN: ");
+							int isbn = input.nextInt();
+							System.out.print("\nBook title: ");
+							input.nextLine();
+							String title = input.nextLine();
+							System.out.print("\nBook author: ");
+							String author = input.nextLine();
+							System.out.print("\nPublication Year of the Book: ");
+							int release = input.nextInt();
+							System.out.print("\nGenre: ");
+							BookGenre genre = BookGenre.valueOf(input.next());
+							System.out.print("\nBook State: ");
+							BookState state = BookState.valueOf(input.next());
+							Book book = new Book(isbn, title, author, release, genre, state);
+							library.addBook(book);
+							System.out.println("\nDone!");
+							break;
+						case 2:
+							int optionThree = -1;
+							do {
+								System.out.println("\n### LIBRARY COLLECTION ###");
+								System.out.print("\n[1] Show available books\n[2] Show unavailable books\n"
+										+ "[3] Show all books\n[0] Main menu\n");
+								System.out.print("\nChoose an option: ");
+								optionThree = input.nextInt();
+								optionThree = validateOption(optionThree, 3);
+								if (optionThree == 1) {
+									System.out.println("\n### Available books ###\n" + library.showCollection());
+								} else if (optionThree == 2) {
+									System.out.println("\n### Unavailable books ###\n" + library.getInvalidBook());
+								} else {
+									System.out.println("\n### All library books ###\n" + library.getBookList());
+								}
+							} while(optionThree != 0);
+							break;
+						case 3:
+							System.out.println("\n### SEARCHING A BOOK ###");
+							System.out.print("\nPlease, type the title book: ");
+							input.nextLine();
+							String titleSearch = input.nextLine();
+							System.out.println("### Search results ###\n" + library.searchBook(titleSearch));
+							break;
+						case 4:
+							System.out.println("\n### SEARCHING BY AUTHOR ###");
+							System.out.print("\nAuthor to search: ");
+							input.nextLine();
+							String authorSearch = input.nextLine();
+							System.out.println("### Search results ###\n" + library.searchAuthor(authorSearch));
+							break;
+						}
+					}
+				} else {
+					System.out.println("hello");					
+				}
+				
+				
+			} catch (LibraryException e) {
+				System.out.println("\nError! " + e.getMessage());
+			}  catch (InputMismatchException e) {
+				System.out.println("\nError: Invalid data type! \n");
+				input.nextLine();
+			} catch (RuntimeException e) {
+				System.out.print("\nUnexpected error.");
+				input.nextLine();
+			}
+		}
+		
+		/*
+		// Test to add objects
 		Book book = new Book(1, "O Homem", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
 		Book book2 = new Book(2, "A Mulher", "Roberto", 1991, BookGenre.Adventure, BookState.Good);
 		Book book3 = new Book(3, "O Velho", "Paulo", 1991, BookGenre.Adventure, BookState.Invalid);
@@ -31,10 +128,6 @@ public class Program {
 		User user5 = new User(5, "Julien", "julien@email.com", "11996658797", UserStatus.Active);
 		User user6 = new User(6, "Ingrid", "ingrid@email.com", "11935449458", UserStatus.Active);
 		
-		UserManagement userManagement = new UserManagement();
-		Library library = new Library();
-		
-		// Test to add objects
 		library.addBook(book);
 		library.addBook(book2);
 		library.addBook(book3);
@@ -49,7 +142,7 @@ public class Program {
 		userManagement.addUser(user5);
 		userManagement.addUser(user6);
 		
-		/*
+		
 		// Test to show lists
 		System.out.println("\nAvailable books: \n" + library.showCollection());
 		System.out.println("\nInavailable books: \n" + library.getInvalidBook());
@@ -145,8 +238,8 @@ public class Program {
 			System.out.println("\nLibrary borrowed books: \n" + library.getBorrowedBooks());
 			System.out.println("\nLibrary invalid books: \n" + library.getInvalidBook());
 		}
-		 */
 		
+		//exceptions test
 		int option = 0;
 		while (option == 0) {
 			try {
@@ -171,8 +264,16 @@ public class Program {
 				System.out.println("Unexpected error");
 			}
 		}
-		
+		*/
 		
 		input.close();
+	}
+	
+	public static int validateOption(int option, int limit) {
+		while (option < 0 || option > limit) {
+			System.out.print("Invalid option. Try again: "); 
+			option = input.nextInt();
+		}
+		return option;
 	}
 }

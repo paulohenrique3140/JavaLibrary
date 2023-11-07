@@ -60,7 +60,7 @@ public class Library {
 	// then returns the book passed in the parameter
 	public Book searchBook(String name) {
 		if (!service.isThereAbook(bookList, name) || service.findByName(bookList, name).getState() == BookState.Invalid) {
-			throw new LibraryException("Book is not found or invalid");
+			throw new LibraryException("\nBook not found or unavailable");
 			
 		}
 		return service.findByName(bookList, name);
@@ -69,7 +69,7 @@ public class Library {
 	// Method to search book list by author
 	public List<Book> searchAuthor(String author) {
 		if (!service.isThereAAuthor(bookList, author)) {
-			throw new LibraryException("There's no results for this search");
+			throw new LibraryException("\nThere's no results for this search");
 		}
 		return service.findByAuthor(bookList, author);
 	}
@@ -77,7 +77,7 @@ public class Library {
 	// Method to loan books
 	public boolean loan(String name, User user) {
 		if (!service.isThereAbook(bookList, name)) {
-			return false;
+			throw new LibraryException("\nBook not found or unavailable");
 		} 
 		// Adding the book to the book user's list
 		user.addBookUser(bookList, name);
@@ -95,7 +95,7 @@ public class Library {
 	// Method to return books
 	public boolean devolution(String name, User user, int state) {
 		if (!service.isThereAbook(user.getUserBooks(), name)) {
-			return false;
+			throw new LibraryException("\nBook not found or unavailable");
 		}
 		
 		// Changing book state

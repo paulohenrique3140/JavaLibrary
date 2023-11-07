@@ -5,6 +5,7 @@ public enum BookGenre {
 	Biography,
 	Classic,
 	Comics,
+	Drama,
 	Fantasy,
 	Mistery,
 	Poetry,
