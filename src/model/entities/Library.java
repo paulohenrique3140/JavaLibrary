@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entities.enums.BookState;
+import model.entities.enums.UserStatus;
 import model.exceptions.LibraryException;
 import service.LibraryService;
 
@@ -64,9 +65,16 @@ public class Library {
 	public Book searchBook(String name) {
 		if (!service.isThereAbook(bookList, name) || service.findByName(bookList, name).getState() == BookState.Invalid) {
 			throw new LibraryException("Book not found or unavailable");
-			
 		}
 		return service.findByName(bookList, name);
+	}
+	
+	// Method to validate if a book is in borrowed book list
+	public boolean searchBorrowedBook(String name) {
+		if (!service.isThereInBorrowedList(borrowedBookList, name)) {
+			throw new LibraryException("Book not found in Borrowed Book List");
+		}
+		return true;
 	}
 	
 	// Method to search book list by author
@@ -81,7 +89,10 @@ public class Library {
 	public boolean loan(String name, User user) {
 		if (!service.isThereAbook(bookList, name)) {
 			throw new LibraryException("Book not found or unavailable");
-		} 
+		} else if (user.getStatus() == UserStatus.Inactive) {
+			throw new LibraryException("User inactive!");
+		}
+		
 		// Adding the book to the book user's list
 		user.addBookUser(bookList, name);
 		
@@ -96,7 +107,7 @@ public class Library {
 	// Method to return books
 	public boolean devolution(String name, User user, int state) {
 		if (!service.isThereAbook(user.getUserBooks(), name)) {
-			throw new LibraryException("Book not found or unavailable");
+			throw new LibraryException("Book not found on user book list");
 		}
 		
 		// Changing book state

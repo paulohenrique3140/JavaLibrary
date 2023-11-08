@@ -31,4 +31,10 @@ public class LibraryService {
 		List<Book> list = bookList.stream().filter(x -> x.getAuthor().equals(author)).collect(Collectors.toList());
 		return list;
 	}
+	
+	// Method to validate if a book is in borrowed book list
+	public boolean isThereInBorrowedList(List<Book> borrowedBookList, String name) {
+		Book list = borrowedBookList.stream().filter(x -> x.getTitle().equals(name)).findFirst().orElse(null);
+		return list != null;
+	}
 }

@@ -19,6 +19,4 @@ public class UserManagementService {
 		User user = list.get(0);
 		return user;
 	}
-	
-	
 }

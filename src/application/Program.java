@@ -80,11 +80,11 @@ public class Program {
 								if (optionThree == 1) {
 									System.out.println("\n### Available books ###\n" + library.showCollection());
 								} else if (optionThree == 2) {
-									System.out.println("\n### Unavailable books ###\n" + library.getInvalidBook());
+									System.out.println("\n### Unavailable books ###\n");
 									System.out.println("\nInvalid books\n" + library.getInvalidBook());
 									System.out.println("\nBorrowed books\n" + library.getBorrowedBooks());
 								} else {
-									System.out.println("\n### All library books ###\n" + library.getBookList());
+									System.out.println("\n### All library books ###\n" + library.getBookList() + library.getBorrowedBooks());
 								}
 							} while(optionThree != 0);
 							break;
@@ -115,8 +115,28 @@ public class Program {
 								System.out.println("User books: " + userManagement.searchUser(emailLoan).getUserBooks());
 							}
 							break;
+						case 6:
+							System.out.println("\n### BOOK RETURN ###");
+							System.out.print("\nPlease, type the title book to return: ");
+							input.nextLine();
+							String titleReturn = input.nextLine();
+							library.searchBorrowedBook(titleReturn);
+							System.out.print("\nEnter the user's email for the loan: ");
+							String emailReturn = input.nextLine();
+							userManagement.searchUser(emailReturn);
+							System.out.print("\nWhat is the book's condition? [0 - Invalid] / [1 - Bad] / [2 - Good]: ");
+							int bookState = input.nextInt();
+							while (bookState < 0 || bookState > 3) {
+								System.out.print("\nInvalid state! Try again [1 - Invalid] / [2 - Bad] / [3 - Good]: ");
+								bookState = input.nextInt();
+							}
+							if (library.devolution(titleReturn, userManagement.searchUser(emailReturn), bookState)) {
+								System.out.println("\nUpdated User books: \n" + userManagement.searchUser(emailReturn).getUserBooks());
+								System.out.println("\nUpdated Library avaliable books: \n" + library.showCollection());
+							}
+							break;
 						default:
-							System.out.println("Good Bye");
+							break;
 						}
 					}
 				} else if (option == 2) {
@@ -156,48 +176,12 @@ public class Program {
 		System.out.println("\nVip users: \n" + userManagement.showVip());
 		System.out.println("\nInactive users: \n" + userManagement.getInactiveUserList());
 		System.out.println("\nAll Users in register: \n" + userManagement.getUserList());
-		
-		
-		// Test to search a book
-		System.out.print("\nSearch a book. Type the title: ");
-		String title5 = input.nextLine();
-		System.out.print(library.searchBook(title5) != null ? library.searchBook(title5) : "Book's invalid state or not found!");
-		
-		// Test to search books by author
-		System.out.print("\nBooks by author. Type an author: ");
-		String author = input.nextLine();
-		System.out.println(library.searchAuthor(author) != null ? library.searchAuthor(author) : "Author's not found!");
-		
+				
 		// Test to search a user
 		System.out.print("\nSearch a user. Type the email: ");
 		String email5 = input.nextLine();
 		System.out.println(userManagement.searchUser(email5) != null ? userManagement.searchUser(email5) : "User's not found or inactive");
 			
-				
-		// Test to loan books
-		System.out.print("\nLoan books. Type 1th book title: ");
-		String title = input.nextLine();
-		System.out.print("\nLoan books. Type 2nd book title: ");
-		String title2 = input.nextLine();
-		System.out.print("\nLoan books. Type 3rd book title: ");
-		String title3 = input.nextLine();
-		
-		System.out.print("\nType email user to borrow the book: ");
-		String email = input.nextLine();
-		if (library.searchBook(title) == null || library.searchBook(title2) == null || library.searchBook(title3) == null ||
-				userManagement.searchUser(email) == null || userManagement.searchUser(email).getStatus() == UserStatus.Inactive) {
-			System.out.println("Book or user not found. Try again with book valid and user active.");
-		} else {
-			library.loan(title, userManagement.searchUser(email));
-			library.loan(title2, userManagement.searchUser(email));
-			library.loan(title3, userManagement.searchUser(email));
-			System.out.println(userManagement.searchUser(email));
-			System.out.println("\nUser borrowed books: \n" + userManagement.searchUser(email).getUserBooks());
-			System.out.println("\nLibrary book collection: \n" + library.showCollection());
-			System.out.println("\nLibrary borrowed books: \n" + library.getBorrowedBooks());
-			System.out.println("\nLibrary invalid books: \n" + library.getInvalidBook());
-		}
-		
 		// Test to change a User status
 		System.out.println();
 		System.out.print("Change a user status. Type email: ");
@@ -215,59 +199,9 @@ public class Program {
 			System.out.println("\nAll Users in register: \n" + userManagement.getUserList());
 		}
 		
-		// Test to devolution
-		input.nextLine();
-		System.out.print("\nBook devolution. Type 1th book title: ");
-		String titleDev = input.nextLine();
-		System.out.print("\nBook devolution. Type 2nd book title: ");
-		String title2Dev = input.nextLine();
-		System.out.print("\nBook devolution. Type 3rd book title: ");
-		String title3Dev = input.nextLine();
 		
-		System.out.print("\nType email user to give back the book: ");
-		String email2 = input.nextLine();
 		
-		if (!library.devolution(titleDev, userManagement.searchUser(email), 0) ||
-				!library.devolution(title2Dev, userManagement.searchUser(email), 1) ||
-				!library.devolution(title3Dev, userManagement.searchUser(email), 2) ||
-				userManagement.searchUser(email2) == null) {
-			System.out.println("Book or user not found. Try again with book valid and user active.");
-		} else {
-			library.devolution(titleDev, userManagement.searchUser(email), 0);
-			library.devolution(title2Dev, userManagement.searchUser(email), 1);
-			library.devolution(title3Dev, userManagement.searchUser(email), 2);
-			System.out.println(userManagement.searchUser(email2));
-			System.out.println("\nUser borrowed books: \n" + userManagement.searchUser(email2).getUserBooks());
-			System.out.println("\nLibrary book collection: \n" + library.showCollection());
-			System.out.println("\nLibrary borrowed books: \n" + library.getBorrowedBooks());
-			System.out.println("\nLibrary invalid books: \n" + library.getInvalidBook());
-		}
 		
-		//exceptions test
-		int option = 0;
-		while (option == 0) {
-			try {
-				System.out.print("\nSearch a book. Type the title: ");
-				String title5 = input.nextLine();
-				System.out.print(library.searchBook(title5));
-				
-				// Test to search books by author
-				System.out.print("\nBooks by author. Type an author: ");
-				String author = input.nextLine();
-				System.out.println(library.searchAuthor(author));
-				
-				// Test to search a user
-				System.out.print("\nSearch a user. Type the email: ");
-				String email5 = input.nextLine();
-				System.out.println(userManagement.searchUser(email5));
-				
-				option = 1;
-			} catch (LibraryException e) {
-				System.out.println("Search error: " + e.getMessage());
-			} catch (RuntimeException e) {
-				System.out.println("Unexpected error");
-			}
-		}
 		*/
 		
 		input.close();
