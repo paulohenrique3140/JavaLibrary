@@ -70,11 +70,25 @@ public class UserManagement {
 	// Method to change a User Status
 	public void changeStatus(String email, int status) {
 		if (status == 0) {
+			if (userService.findByEmail(userList, email).getStatus() == UserStatus.Inactive) {
+				throw new UserManagementException("User's already inactive");
+			}
 			inactiveUserList.add(userService.findByEmail(userList, email));
 			userService.findByEmail(userList, email).setStatus(UserStatus.Inactive);
 		} else if (status == 1) {
+			if (userService.findByEmail(userList, email).getStatus() == UserStatus.Active) {
+				throw new UserManagementException("User's already in Active status");
+			} else if (userService.findByEmail(userList, email).getStatus() == UserStatus.Inactive) {
+				inactiveUserList.remove(userService.findByEmail(inactiveUserList, email));
+			}
 			userService.findByEmail(userList, email).setStatus(UserStatus.Active);
+			
 		} else {
+			if (userService.findByEmail(userList, email).getStatus() == UserStatus.Vip) {
+				throw new UserManagementException("User's already in Vip status");
+			} else if (userService.findByEmail(userList, email).getStatus() == UserStatus.Inactive) {
+				inactiveUserList.remove(userService.findByEmail(inactiveUserList, email));
+			}
 			userService.findByEmail(userList, email).setStatus(UserStatus.Vip);
 		}
 	}
