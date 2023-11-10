@@ -45,7 +45,6 @@ public class Program {
 							System.out.print("\nChoose an option: ");
 							optionTwo = input.nextInt();
 							optionTwo = validateOption(optionTwo, 6);
-							
 							switch(optionTwo) {
 							case 1:
 								System.out.println("\n### BOOK ADD ###");
@@ -69,7 +68,7 @@ public class Program {
 								book = new Book(isbn, title, author, release, genre, state);
 								library.addBook(book);
 								System.out.println("\nDone!");
-								break;
+							break;
 							case 2:
 								int optionThree = -1;
 								do {
@@ -78,15 +77,17 @@ public class Program {
 											+ "[3] Show all books\n[0] Return to previousl menu\n");
 									System.out.print("\nChoose an option: ");
 									optionThree = input.nextInt();
-									optionThree = validateOption(optionThree, 3);
-									if (optionThree == 1) {
-										System.out.println("\n### Available books ###\n" + library.showCollection());
-									} else if (optionThree == 2) {
-										System.out.println("\n### Unavailable books ###\n");
-										System.out.println("\nInvalid books\n" + library.getInvalidBook());
-										System.out.println("\nBorrowed books\n" + library.getBorrowedBooks());
-									} else {
-										System.out.println("\n### All library books ###\n" + library.getBookList() + library.getBorrowedBooks());
+									if (optionThree != 0) {	
+										optionThree = validateOption(optionThree, 3);
+										if (optionThree == 1) {
+											System.out.println("\n### Available books ###\n" + library.showCollection());
+										} else if (optionThree == 2) {
+											System.out.println("\n### Unavailable books ###\n");
+											System.out.println("\nInvalid books\n" + library.getInvalidBook());
+											System.out.println("\nBorrowed books\n" + library.getBorrowedBooks());
+										} else {
+											System.out.println("\n### All library books ###\n" + library.getBookList() + library.getBorrowedBooks());
+										}
 									}
 								} while(optionThree != 0);
 								break;
@@ -177,20 +178,23 @@ public class Program {
 						case 2:
 							int optionFive = -1;
 							do {
+								
 								System.out.println("\n### USER RECORDS ###");
 								System.out.print("\n[1] Show regular users\n[2] Show vip users\n"
 										+ "[3] Show inactive users\n[4] Show all users\n[0] Return to previous menu\n");
 								System.out.print("\nChoose an option: ");
 								optionFive = input.nextInt();
-								optionFive = validateOption(optionFive, 4);
-								if (optionFive == 1) {
-									System.out.println("\nActive users: \n" + userManagement.showUsers());
-								} else if (optionFive == 2) {
-									System.out.println("\nJust vip users: \n" + userManagement.showVip());
-								} else if (optionFive == 3) {
-									System.out.println("\nInactive users: \n" + userManagement.getInactiveUserList());
-								} else {
-									System.out.println("\nAll users: \n" + userManagement.getUserList());
+								if (optionFive != 0) {
+									optionFive = validateOption(optionFive, 4);
+									if (optionFive == 1) {
+										System.out.println("\nActive users: \n" + userManagement.showUsers());
+									} else if (optionFive == 2) {
+										System.out.println("\nJust vip users: \n" + userManagement.showVip());
+									} else if (optionFive == 3) {
+										System.out.println("\nInactive users: \n" + userManagement.getInactiveUserList());
+									} else {
+										System.out.println("\nAll users: \n" + userManagement.getUserList());
+									}
 								}
 							} while (optionFive != 0);
 							break;
@@ -215,28 +219,29 @@ public class Program {
 									+ "[3] Change user status\n[0] Return to previous menu\n");
 							System.out.print("\nChoose an option: ");
 							int optionSix = input.nextInt();
-							optionSix = validateOption(optionSix, 3);
-							if (optionSix == 1) {
-								input.nextLine();
-								System.out.print("\nType new email: ");
-								String newEmail = input.nextLine();
-								userToUpdate.setEmail(newEmail);
-								System.out.println("\nUpdate data: " + userManagement.searchUser(newEmail));
-							} else if (optionSix == 2) {
-								input.nextLine();
-								System.out.print("\nType new phonne number: ");
-								String newPhonne = input.nextLine();
-								userToUpdate.setPhonne(newPhonne);
-								System.out.println("\nDone!");
-								System.out.println("\nUpdate data: " + userManagement.searchUser(updateEmail));
-							} else  {
-								System.out.print("\nType new status [0 - Inactive] / [1 - Active] / [2 - Vip]: ");
-								int newStatus = input.nextInt();
-								userManagement.changeStatus(updateEmail, newStatus);
-								System.out.println("\nDone!");
-								System.out.println("\nUpdate data: " + userManagement.searchUser(updateEmail));
-							} 
-							
+							if (optionSix != 0) {	
+								optionSix = validateOption(optionSix, 3);
+								if (optionSix == 1) {
+									input.nextLine();
+									System.out.print("\nType new email: ");
+									String newEmail = input.nextLine();
+									userToUpdate.setEmail(newEmail);
+									System.out.println("\nUpdate data: " + userManagement.searchUser(newEmail));
+								} else if (optionSix == 2) {
+									input.nextLine();
+									System.out.print("\nType new phonne number: ");
+									String newPhonne = input.nextLine();
+									userToUpdate.setPhonne(newPhonne);
+									System.out.println("\nDone!");
+									System.out.println("\nUpdate data: " + userManagement.searchUser(updateEmail));
+								} else {
+									System.out.print("\nType new status [0 - Inactive] / [1 - Active] / [2 - Vip]: ");
+									int newStatus = input.nextInt();
+									userManagement.changeStatus(updateEmail, newStatus);
+									System.out.println("\nDone!");
+									System.out.println("\nUpdate data: " + userManagement.searchUser(updateEmail));
+								}
+							}							
 							break;
 						default:
 							break;

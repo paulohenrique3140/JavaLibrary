@@ -79,10 +79,16 @@ public class Library {
 	
 	// Method to search book list by author
 	public List<Book> searchAuthor(String author) {
-		if (!service.isThereAAuthor(bookList, author)) {
+		List<Book> result = new ArrayList<>();
+		if (!service.isThereAAuthor(bookList, author) || !service.isThereAAuthor(borrowedBookList, author)) {
 			throw new LibraryException("There's no results for this search");
 		}
-		return service.findByAuthor(bookList, author);
+		if (service.findByAuthor(bookList, author) != null) {
+			result = service.findByAuthor(bookList, author);
+		} else if (service.findByAuthor(borrowedBookList, author) != null) {
+			result = service.findByAuthor(borrowedBookList, author);
+		}
+		return result;
 	}
 
 	// Method to loan books
