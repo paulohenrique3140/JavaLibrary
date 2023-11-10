@@ -20,15 +20,19 @@ public class LibraryService {
 		return book;
 	}
 	
-	// Method to check if a authos exists in collection
+	// Method to check if a author exists in collection
 	public boolean isThereAAuthor(List<Book> bookList, String author) {
 		Book list = bookList.stream().filter(x -> x.getAuthor().equals(author)).findFirst().orElse(null);
 		return list != null;
 	}
 	
 	// Method to return a list book list by the author
-	public List<Book> findByAuthor(List<Book> bookList, String author) {
+	public List<Book> findByAuthor(List<Book> bookList, List<Book> borrowedBookList, String author) {
 		List<Book> list = bookList.stream().filter(x -> x.getAuthor().equals(author)).collect(Collectors.toList());
+		List<Book> list2 = borrowedBookList.stream().filter(x -> x.getAuthor().equals(author)).collect(Collectors.toList());
+		for (Book x : list2) {
+			list.add(x);
+		}
 		return list;
 	}
 	

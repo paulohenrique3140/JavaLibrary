@@ -74,7 +74,7 @@ public class Program {
 								do {
 									System.out.println("\n### LIBRARY COLLECTION ###");
 									System.out.print("\n[1] Show available books\n[2] Show unavailable books\n"
-											+ "[3] Show all books\n[0] Return to previousl menu\n");
+											+ "[3] Show all books\n[0] Return to previous menu\n");
 									System.out.print("\nChoose an option: ");
 									optionThree = input.nextInt();
 									if (optionThree != 0) {	
