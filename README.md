@@ -1,6 +1,9 @@
-# JavaLibrary - Sistema de Gerenciamento de Biblioteca em Java
+# JavaLibrary - Sistema de Gerenciamento de Biblioteca
 
-![JavaLibrary_Logo](/JavaLibrary_Logo.PNG)
+<p align="center">
+  <img width="460" height="300" src="![JavaLibrary_Logo](/JavaLibrary_Logo.PNG)">
+</p>
+   
 
 Este projeto Java implementa um sistema simples de gerenciamento de biblioteca que permite aos usuários interagir com a coleção de livros da biblioteca e o registro de usuários. O sistema é projetado para ser executado por meio do console e fornece funcionalidades como adicionar livros à biblioteca, exibir a coleção, procurar livros, registrar usuários e gerenciar o status do usuário.
 
