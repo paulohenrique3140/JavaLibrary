@@ -1,7 +1,7 @@
 # JavaLibrary - Sistema de Gerenciamento de Biblioteca
 
 <p align="center">
-  <img width="460" height="300" src="![JavaLibrary_Logo](/JavaLibrary_Logo.PNG)">
+  <img width="460" height="300" src="/JavaLibrary_Logo.PNG">
 </p>
    
 
