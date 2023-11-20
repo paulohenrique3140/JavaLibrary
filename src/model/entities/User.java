@@ -65,16 +65,18 @@ public class User {
 		this.status = status;
 	}
 	
+	public List<Book> getUserBooks() {
+		return userBooks;
+	}
+	
+	// Method to add books in userBooks when the user borrows
 	public void addBookUser(List<Book> bookList, String bookName) {
 		userBooks.add(service.findByName(bookList, bookName));
 	}
 	
+	// "Method to remove books from userBooks when the user returns
 	public void removeBookUser(List<Book> borrowedBookList, String bookName) {
 		userBooks.remove(service.findByName(borrowedBookList, bookName));
-	}
-	
-	public List<Book> getUserBooks() {
-		return userBooks;
 	}
 	
 	@Override

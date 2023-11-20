@@ -73,11 +73,4 @@ public class Book {
 		return String.format("\nISBN: %d | Title: %s | Author: %s | Release: %d | Genre: %s | State: %s\n", 
 				isbn, title, author, release, genre, state);
 	}
-	
-	
-	
-	
-	
-	
-	
 }

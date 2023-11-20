@@ -25,15 +25,16 @@ public class UserManagement {
 		return inactiveUserList;
 	}
 	
+	public List<User> getUserList() {
+		return userList;
+	}
+	
+	// Method to add user
 	public void addUser(User user) {
 		userList.add(user);
 		if (user.getStatus() == UserStatus.Inactive) {
 			inactiveUserList.add(user);
 		}
-	}
-	
-	public List<User> getUserList() {
-		return userList;
 	}
 	
 	// show active users and validate inactive users
